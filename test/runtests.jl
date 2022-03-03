@@ -8,4 +8,5 @@ using Test
     MDAFiles.save(fname, X)
     X2 = MDAFiles.load(fname)
     @test X2 ≈ X
+    rm(fname)
 end
