@@ -1,4 +1,12 @@
 module MDAFiles
+using JSON
+
+struct MDAData{T<:Real}
+    data::Matrix{T}
+    sampling_rate::Float64
+    channel_pos::Matrix{Float64}
+end
+
 
 data_format = Dict(UInt8 => Int32(-2),
                    Float32 => Int32(-3),
@@ -39,6 +47,24 @@ function save(fname::String, X::Matrix{T}) where T <: Real
         write(fid, UInt32(2))
         write(fid, [UInt32.(size(X))...])
         write(fid, X)
+    end
+end
+
+function create_dataset(name::String, data::MDAData{T}) where T <: Real
+    mkdir(name)
+    cd(name) do
+        save("raw.mda", data.data)
+        open("params.json", "w") do fid
+            JSON.print(fid, Dict("sampling_rate" => data.sampling_rate))
+        end
+        # save geometry
+        open("geom.csv", "w") do fid
+            for i in 1:size(data.channel_pos,2)
+                ss = join(string.(data.channel_pos[:,i]), ',')
+                write(fid, ss)
+            end
+            write(fid, '\n')
+        end
     end
 end
 end # module
