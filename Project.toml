@@ -1,7 +1,7 @@
 name = "MDAFiles"
 uuid = "c5379b7d-737a-4cf3-a598-4869b39c4869"
 authors = ["roger <roger.herikstad@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
