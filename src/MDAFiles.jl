@@ -51,7 +51,9 @@ function save(fname::String, X::Matrix{T}) where T <: Real
 end
 
 function create_dataset(name::String, data::MDAData{T}) where T <: Real
-    mkdir(name)
+    if !isdir(name)
+        mkdir(name)
+    end
     cd(name) do
         save("raw.mda", data.data)
         open("params.json", "w") do fid
